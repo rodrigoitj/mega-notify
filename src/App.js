@@ -276,7 +276,7 @@ function App() {
       const notificationEventSchedules = parseNotificationEventSchedules(
         eventsSchedules
       );
-      console.table(notificationEventSchedules);
+      //console.table(notificationEventSchedules);
       setParsedNotificationSchedules(notificationEventSchedules);
       setNotificationStarted(true);
     });
@@ -478,7 +478,15 @@ function App() {
                     return (
                       <Col span={8} key={index}>
                         <Alert
-                          message={nextEvent[0]}
+                          message={
+                            !eventDetails.hasOwnProperty(nextEvent[0]) ? (
+                              nextEvent[0]
+                            ) : (
+                              <a href={eventDetails[nextEvent[0]]}>
+                                {nextEvent[0]}
+                              </a>
+                            )
+                          }
                           description={
                             <Countdown
                               key={cdKey}
