@@ -440,7 +440,7 @@ function App() {
             }}
           >
             <div className="contentOptionsBar" ref={contentOptionsBarRef}>
-              <Affix offsetTop={0} onChange={(affixed) => console.log(affixed)}>
+              <Affix offsetTop={0}>
                 <Menu
                   mode="horizontal"
                   selectable={false}
