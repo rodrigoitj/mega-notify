@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import logo from "./logo.png";
 import {
   notification,
@@ -11,6 +11,7 @@ import {
   Alert,
   Row,
   Col,
+  Affix,
 } from "antd";
 import {
   NotificationOutlined,
@@ -31,8 +32,9 @@ import { getConfig } from "./configStorage";
 import { sortBy } from "lodash";
 import { useInterval } from "@react-corekit/use-interval";
 import eventDetails from "./eventDetails";
-//const { MenuItem } = Menu;
 const { Header, Content, Sider } = Layout;
+
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
 
 function App() {
   const configDefaults = {
@@ -49,6 +51,8 @@ function App() {
     parsedNotificationSchedules,
     setParsedNotificationSchedules,
   ] = useState([]);
+  const contentOptionsBarRef = useRef(null);
+  const executeScroll = () => scrollToRef(contentOptionsBarRef);
 
   const handleAlertChange = (tipo, row, index) => (momentObj) => {
     const events = [...eventsSchedules];
@@ -264,6 +268,7 @@ function App() {
   }
 
   function iniciarNotificacoes() {
+    executeScroll();
     Notification.requestPermission(function (permission) {
       if (permission === "denied") {
         openWindowNotificationWithIcon(
@@ -434,41 +439,43 @@ function App() {
               minHeight: 280,
             }}
           >
-            <div className="contentOptionsBar">
-              <Menu
-                mode="horizontal"
-                selectable={false}
-                style={{ height: "100%", borderRight: 0 }}
-              >
-                <Menu.Item
-                  key="1"
-                  onClick={toggleNotificacoes}
-                  icon={
-                    notificationStarted ? (
-                      <PauseOutlined />
-                    ) : (
-                      <PlaySquareOutlined />
-                    )
-                  }
-                >
-                  {!notificationStarted ? "Iniciar" : "Parar"}
-                </Menu.Item>
-                <Menu.SubMenu
-                  title="Opções"
-                  icon={<ControlOutlined />}
-                  disabled={notificationStarted}
+            <div className="contentOptionsBar" ref={contentOptionsBarRef}>
+              <Affix offsetTop={0} onChange={(affixed) => console.log(affixed)}>
+                <Menu
+                  mode="horizontal"
+                  selectable={false}
+                  style={{ height: "100%", borderRight: 0 }}
                 >
                   <Menu.Item
-                    icon={<FieldTimeOutlined />}
-                    onClick={restaurarPadrao}
+                    key="1"
+                    onClick={toggleNotificacoes}
+                    icon={
+                      notificationStarted ? (
+                        <PauseOutlined />
+                      ) : (
+                        <PlaySquareOutlined />
+                      )
+                    }
                   >
-                    Restaurar padrão
+                    {!notificationStarted ? "Iniciar" : "Parar"}
                   </Menu.Item>
-                  <Menu.Item icon={<RestOutlined />} onClick={limparTodos}>
-                    Limpar todos
-                  </Menu.Item>
-                </Menu.SubMenu>
-              </Menu>
+                  <Menu.SubMenu
+                    title="Opções"
+                    icon={<ControlOutlined />}
+                    disabled={notificationStarted}
+                  >
+                    <Menu.Item
+                      icon={<FieldTimeOutlined />}
+                      onClick={restaurarPadrao}
+                    >
+                      Restaurar padrão
+                    </Menu.Item>
+                    <Menu.Item icon={<RestOutlined />} onClick={limparTodos}>
+                      Limpar todos
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                </Menu>
+              </Affix>
             </div>
             {notificationStarted && (
               <div className="nextEvent">
