@@ -287,7 +287,7 @@ function App() {
       new Notification(siteTitle, {
         body: "Você parou de receber notificações",
         icon: logo,
-        tag: "event",
+        tag: "event-stop",
       });
     }
     setNotificationStarted(false);
@@ -331,7 +331,7 @@ function App() {
           const notification = new Notification(siteTitle, {
             body: `${evento} em ${minutos}`,
             icon: logo,
-            tag: "event",
+            // tag: `event ${evento}`,
           });
           if (eventDetails.hasOwnProperty(evento)) {
             notification.addEventListener("click", (event) => {
