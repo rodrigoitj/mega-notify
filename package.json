@@ -20,7 +20,7 @@
     "react-helmet": "^6.1.0",
     "react-scripts": "3.4.3"
   },
-  "homepage": "http://rodrigoitj.github.io/mega-notify",
+  "homepage": "https://rodrigoitj.github.io/mega-notify",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
