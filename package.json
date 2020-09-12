@@ -20,10 +20,13 @@
     "react-helmet": "^6.1.0",
     "react-scripts": "3.4.3"
   },
+  "homepage": "http://rodrigoitj.github.io/mega-notify",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
