@@ -348,13 +348,13 @@ function App() {
       }
 
       if (schedules.length < initialLength && schedules.length > 3) {
-        console.table(schedules);
+        //console.table(schedules);
         setParsedNotificationSchedules(schedules);
       } else if (schedules.length <= 3) {
         const notificationEventSchedules = parseNotificationEventSchedules(
           eventsSchedules
         );
-        console.table(notificationEventSchedules);
+        //console.table(notificationEventSchedules);
         setParsedNotificationSchedules(notificationEventSchedules);
       }
     },
