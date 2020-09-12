@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/mega-notify/static/css/main.153260d0.chunk.css",
+    "main.js": "/mega-notify/static/js/main.3104842b.chunk.js",
+    "main.js.map": "/mega-notify/static/js/main.3104842b.chunk.js.map",
+    "runtime-main.js": "/mega-notify/static/js/runtime-main.e7ecc7e0.js",
+    "runtime-main.js.map": "/mega-notify/static/js/runtime-main.e7ecc7e0.js.map",
+    "static/js/2.9062871e.chunk.js": "/mega-notify/static/js/2.9062871e.chunk.js",
+    "static/js/2.9062871e.chunk.js.map": "/mega-notify/static/js/2.9062871e.chunk.js.map",
+    "index.html": "/mega-notify/index.html",
+    "precache-manifest.5b182c5b62da5a16309bcc7995ed2af0.js": "/mega-notify/precache-manifest.5b182c5b62da5a16309bcc7995ed2af0.js",
+    "service-worker.js": "/mega-notify/service-worker.js",
+    "static/css/main.153260d0.chunk.css.map": "/mega-notify/static/css/main.153260d0.chunk.css.map",
+    "static/js/2.9062871e.chunk.js.LICENSE.txt": "/mega-notify/static/js/2.9062871e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e7ecc7e0.js",
+    "static/js/2.9062871e.chunk.js",
+    "static/css/main.153260d0.chunk.css",
+    "static/js/main.3104842b.chunk.js"
+  ]
+}
