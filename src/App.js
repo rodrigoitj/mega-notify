@@ -492,7 +492,11 @@ function App() {
                             !eventDetails.hasOwnProperty(nextEvent[0]) ? (
                               nextEvent[0]
                             ) : (
-                              <a href={eventDetails[nextEvent[0]]}>
+                              <a
+                                href={eventDetails[nextEvent[0]]}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 {nextEvent[0]}
                               </a>
                             )
