@@ -393,7 +393,10 @@ function App() {
           <title>{siteTitle}</title>
           <meta name="description" content={siteTitle} />
         </Helmet>
-        <div className="logo">{siteTitle}</div>
+        <div className="logo">
+          {siteTitle}
+          <sup>(beta)</sup>
+        </div>
         <Menu mode="horizontal" theme="dark" style={{ float: "right" }}>
           <Menu.Item key="1">
             <a
