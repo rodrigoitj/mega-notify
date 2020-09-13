@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d3a3e910b5b22002812dbcf5e07e4a73",
+    "revision": "79f6b7d416d5eadef3fb15120f84c93b",
     "url": "/mega-notify/index.html"
   },
   {
