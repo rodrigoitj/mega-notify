@@ -23,9 +23,9 @@
   "homepage": "https://rodrigoitj.github.io/mega-notify",
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build --nomaps",
     "test": "craco test",
-    "predeploy": "craco build",
+    "predeploy": "craco build --nomaps",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
