@@ -12,6 +12,7 @@ import {
   Row,
   Col,
   Affix,
+  Progress,
 } from "antd";
 import {
   NotificationOutlined,
@@ -32,9 +33,11 @@ import { getConfig } from "./configStorage";
 import { sortBy } from "lodash";
 import { useInterval } from "@react-corekit/use-interval";
 import eventDetails from "./eventDetails";
+import humanizeDuration from "humanize-duration";
 const { Header, Content, Sider } = Layout;
 
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+const eventQueueSize = 6;
 
 function App() {
   const configDefaults = {
@@ -47,6 +50,8 @@ function App() {
   const [timeOffset] = useState(
     getConfig("timeOffset", configDefaults["timeOffset"])
   );
+  const [initializedDate, setInitializedDate] = useState(null);
+
   const [
     parsedNotificationSchedules,
     setParsedNotificationSchedules,
@@ -284,6 +289,7 @@ function App() {
       //console.table(notificationEventSchedules);
       setParsedNotificationSchedules(notificationEventSchedules);
       setNotificationStarted(true);
+      setInitializedDate(Date.now());
     });
   }
 
@@ -320,7 +326,26 @@ function App() {
     setEventsSchedules(eventsTime);
     setStorageAlerts(eventsTime);
   }
-
+  function calcPercentage(msRemainingToEvent, secondsToEventFromStart) {
+    // {secs / Math.round(props.total / 100, 0) -
+    //   1}
+    // - {Math.round(props.total / 1000, 0)} -{" "}
+    // {secs};
+    const secondsRemainingToEvent = Math.round(msRemainingToEvent / 1000, 0);
+    const secondsPassed = secondsToEventFromStart - secondsRemainingToEvent;
+    const pct = parseFloat(
+      (secondsPassed / secondsToEventFromStart) * 100
+    ).toFixed(2);
+    return pct;
+  }
+  function showHumanized(time) {
+    const [minute, seconds] = time.split(":");
+    const total = parseFloat(minute) * 60 + parseFloat(seconds);
+    //console.log("total", total);
+    return humanizeDuration(total * 1000, {
+      language: "pt",
+    });
+  }
   useInterval(
     () => {
       //console.log("parsedNotificationSchedules", parsedNotificationSchedules);
@@ -334,7 +359,7 @@ function App() {
         if (horarioNotificacao <= now) {
           schedules.shift();
           const notification = new Notification(siteTitle, {
-            body: `${evento} em ${minutos}`,
+            body: `${evento} em ${showHumanized(minutos)}`,
             icon: logo,
             // tag: `event ${evento}`,
           });
@@ -347,10 +372,13 @@ function App() {
         } else break;
       }
 
-      if (schedules.length < initialLength && schedules.length > 3) {
+      if (
+        schedules.length < initialLength &&
+        schedules.length > eventQueueSize
+      ) {
         //console.table(schedules);
         setParsedNotificationSchedules(schedules);
-      } else if (schedules.length <= 3) {
+      } else if (schedules.length <= eventQueueSize) {
         const notificationEventSchedules = parseNotificationEventSchedules(
           eventsSchedules
         );
@@ -383,7 +411,7 @@ function App() {
   }, []);
 
   const nextEvents = useMemo(() => {
-    return parsedNotificationSchedules.slice(0, 3);
+    return parsedNotificationSchedules.slice(0, eventQueueSize);
   }, [parsedNotificationSchedules]);
 
   return (
@@ -485,8 +513,15 @@ function App() {
                 <Row gutter={16}>
                   {nextEvents.map((nextEvent, index) => {
                     const cdKey = `${nextEvent[0]}-${nextEvent[1].toString()}`;
+                    const momentEventDate = moment(nextEvent[1]);
+                    const momentInitializedDate = moment(initializedDate);
+                    const secondsToEvent = momentEventDate.diff(
+                      momentInitializedDate,
+                      "seconds"
+                    );
+
                     return (
-                      <Col span={8} key={index}>
+                      <Col span={4} key={index}>
                         <Alert
                           message={
                             !eventDetails.hasOwnProperty(nextEvent[0]) ? (
@@ -505,29 +540,40 @@ function App() {
                             <Countdown
                               key={cdKey}
                               date={nextEvent[1]}
-                              intervalDelay={0}
+                              intervalDelay={500}
                               precision={3}
                               renderer={({
                                 hours,
                                 minutes,
                                 seconds,
                                 completed,
-                              }) =>
-                                !completed ? (
-                                  <div>
-                                    próximo alerta em{" "}
+                                ...props
+                              }) => (
+                                <div>
+                                  {/* próximo alerta em{" "}
                                     {hours.toString().padStart(2, "0")}:
                                     {minutes.toString().padStart(2, "0")}:
                                     {seconds.toString().padStart(2, "0")}{" "}
-                                    minutos <br />
-                                    {moment(nextEvent[1]).format(
-                                      "DD/MM/YYYY HH:mm:ss"
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div>Agora!</div>
-                                )
-                              }
+                                    minutos <br /> */}
+                                  {momentEventDate.format(
+                                    "DD/MM/YYYY HH:mm:ss"
+                                  )}
+                                  <br />
+                                  <Progress
+                                    percent={
+                                      !completed
+                                        ? calcPercentage(
+                                            props.total,
+                                            secondsToEvent
+                                          )
+                                        : 100
+                                    }
+                                    size="small"
+                                    status="active"
+                                    showInfo={false}
+                                  />
+                                </div>
+                              )}
                             />
                           }
                           type={index === 0 ? "success" : "warning"}
