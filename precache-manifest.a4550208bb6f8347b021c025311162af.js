@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1895d1c87f50c221df17367d6687d063",
+    "revision": "875988b05cfd245192e4c3a2c39ca13d",
     "url": "/mega-notify/index.html"
   },
   {
-    "revision": "17676acd07d15752c3cc",
+    "revision": "18fa3889a17de20748bd",
     "url": "/mega-notify/static/css/main.5d1f30e3.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mega-notify/static/js/2.fbf0797b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "17676acd07d15752c3cc",
-    "url": "/mega-notify/static/js/main.79672de5.chunk.js"
+    "revision": "18fa3889a17de20748bd",
+    "url": "/mega-notify/static/js/main.0f199b16.chunk.js"
   },
   {
     "revision": "2dd698a0ebc3a547ba99",
