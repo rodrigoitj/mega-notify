@@ -339,8 +339,14 @@ function App() {
     return pct;
   }
   function showHumanized(time) {
-    const [minute, seconds] = time.split(":");
-    const total = parseFloat(minute) * 60 + parseFloat(seconds);
+    let total = 0;
+    if (time && time.toString().includes(":")) {
+      const [minute, seconds] = time.split(":");
+      total = parseFloat(minute) * 60 + parseFloat(seconds);
+    } else {
+      total = parseFloat(time);
+    }
+
     //console.log("total", total);
     return humanizeDuration(total * 1000, {
       language: "pt",
@@ -550,14 +556,14 @@ function App() {
                                 ...props
                               }) => (
                                 <div>
-                                  {/* próximo alerta em{" "}
-                                    {hours.toString().padStart(2, "0")}:
-                                    {minutes.toString().padStart(2, "0")}:
-                                    {seconds.toString().padStart(2, "0")}{" "}
-                                    minutos <br /> */}
-                                  {momentEventDate.format(
+                                  {/* {momentEventDate.format(
                                     "DD/MM/YYYY HH:mm:ss"
                                   )}
+                                  <br /> */}
+                                  {showHumanized(
+                                    Math.round(props.total / 1000)
+                                  )}{" "}
+                                  para o alerta
                                   <br />
                                   <Progress
                                     percent={
