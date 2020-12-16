@@ -41,7 +41,7 @@ const eventQueueSize = 6;
 
 function App() {
   const configDefaults = {
-    timeOffset: 90,
+    timeOffset: 10,
   };
   const [siteTitle] = useState("MEGA Notify");
   const [eventsSchedules, setEventsSchedules] = useState([]);
