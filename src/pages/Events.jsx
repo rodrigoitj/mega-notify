@@ -1,12 +1,7 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useRef,
-  useContext,
-} from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import logo from '../assets/logo.png';
+
 import {
   notification,
   Table,
@@ -26,6 +21,7 @@ import {
   FieldTimeOutlined,
   PauseOutlined,
   RestOutlined,
+  ClearOutlined,
   ControlOutlined,
 } from '@ant-design/icons';
 import Countdown from 'react-countdown';
@@ -37,12 +33,11 @@ import {
   setStorageAlerts,
   getStorageAlerts,
   getConfig,
-} from '../services/storageService';
+} from '../services/storageService.ts';
 import { sortBy } from 'lodash';
-import { useInterval } from '@react-corekit/use-interval';
-import eventDetails from '../constants/eventDetails';
+import eventDetails from '../constants/eventDetails.js';
 import humanizeDuration from 'humanize-duration';
-import GlobalContext from '../context/GlobalContext';
+import { siteTitle } from '../state/GlobalState.js';
 
 const { Content } = Layout;
 
@@ -51,16 +46,13 @@ const scrollToRef = (ref) =>
 const eventQueueSize = 6;
 
 function Events(props) {
-  const { siteTitle } = useContext(GlobalContext);
-
   const configDefaults = {
     timeOffset: 10,
   };
   const [eventsSchedules, setEventsSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [notificationStarted, setNotificationStarted] = useState(
-    false,
-  );
+  const [notificationStarted, setNotificationStarted] =
+    useState(false);
   const [timeOffset] = useState(
     getConfig('timeOffset', configDefaults['timeOffset']),
   );
@@ -307,9 +299,8 @@ function Events(props) {
         );
         return;
       }
-      const notificationEventSchedules = parseNotificationEventSchedules(
-        eventsSchedules,
-      );
+      const notificationEventSchedules =
+        parseNotificationEventSchedules(eventsSchedules);
       //console.table(notificationEventSchedules);
       setParsedNotificationSchedules(notificationEventSchedules);
       setNotificationStarted(true);
@@ -383,48 +374,52 @@ function Events(props) {
       language: 'pt',
     });
   }
-  useInterval(
-    () => {
-      //console.log("parsedNotificationSchedules", parsedNotificationSchedules);
-      const schedules = [...parsedNotificationSchedules];
-      const initialLength = schedules.length;
-      for (const key in schedules) {
-        const element = parsedNotificationSchedules[key];
-        const now = new Date();
-        const [evento, horarioNotificacao, minutos] = element;
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => {
+        //console.log("parsedNotificationSchedules", parsedNotificationSchedules);
+        const schedules = [...parsedNotificationSchedules];
+        const initialLength = schedules.length;
+        for (const key in schedules) {
+          const element = parsedNotificationSchedules[key];
+          const now = new Date();
+          const [evento, horarioNotificacao, minutos] = element;
 
-        if (horarioNotificacao <= now) {
-          schedules.shift();
-          const notification = new Notification(siteTitle, {
-            body: `${evento} em ${showHumanized(minutos)}`,
-            icon: logo,
-            // tag: `event ${evento}`,
-          });
-          if (eventDetails.hasOwnProperty(evento)) {
-            notification.addEventListener('click', (event) => {
-              event.preventDefault(); // prevent the browser from focusing the Notification's tab
-              window.open(eventDetails[evento], '_blank');
+          if (horarioNotificacao <= now) {
+            schedules.shift();
+            const notification = new Notification(siteTitle, {
+              body: `${evento} em ${showHumanized(minutos)}`,
+              icon: logo,
+              // tag: `event ${evento}`,
             });
-          }
-        } else break;
-      }
+            if (eventDetails.hasOwnProperty(evento)) {
+              notification.addEventListener('click', (event) => {
+                event.preventDefault(); // prevent the browser from focusing the Notification's tab
+                window.open(eventDetails[evento], '_blank');
+              });
+            }
+          } else break;
+        }
 
-      if (
-        schedules.length < initialLength &&
-        schedules.length > eventQueueSize
-      ) {
-        //console.table(schedules);
-        setParsedNotificationSchedules(schedules);
-      } else if (schedules.length <= eventQueueSize) {
-        const notificationEventSchedules = parseNotificationEventSchedules(
-          eventsSchedules,
-        );
-        //console.table(notificationEventSchedules);
-        setParsedNotificationSchedules(notificationEventSchedules);
-      }
-    },
-    notificationStarted ? 5000 : null,
-  );
+        if (
+          schedules.length < initialLength &&
+          schedules.length > eventQueueSize
+        ) {
+          //console.table(schedules);
+          setParsedNotificationSchedules(schedules);
+        } else if (schedules.length <= eventQueueSize) {
+          const notificationEventSchedules =
+            parseNotificationEventSchedules(eventsSchedules);
+          //console.table(notificationEventSchedules);
+          setParsedNotificationSchedules(notificationEventSchedules);
+        }
+      },
+      notificationStarted ? 5000 : null,
+    );
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     setIsLoading(eventsSchedules.length === 0);
@@ -452,18 +447,84 @@ function Events(props) {
   const nextEvents = useMemo(() => {
     return parsedNotificationSchedules.slice(0, eventQueueSize);
   }, [parsedNotificationSchedules]);
-
+  const breadCrumbItems = [
+    {
+      title: 'Notificações',
+    },
+  ];
+  const actionMenuItems = [
+    {
+      label: !notificationStarted ? 'Iniciar' : 'Parar',
+      key: '1',
+      icon: notificationStarted ? (
+        <PauseOutlined />
+      ) : (
+        <PlaySquareOutlined />
+      ),
+      onClick: toggleNotificacoes,
+    },
+    {
+      label: 'Opções',
+      key: '3',
+      icon: <ControlOutlined />,
+      onClick: restaurarPadrao,
+      items: [
+        {
+          label: 'Restaurar padrão',
+          key: '1',
+          icon: <FieldTimeOutlined />,
+          onClick: restaurarPadrao,
+        },
+        {
+          label: 'Limpar todos',
+          key: '2',
+          icon: <RestOutlined />,
+          onClick: limparTodos,
+        },
+      ],
+    },
+  ];
+  // <Menu.Item
+  //               key="1"
+  //               onClick={toggleNotificacoes}
+  //               icon={
+  //                 notificationStarted ? (
+  //                   <PauseOutlined />
+  //                 ) : (
+  //                   <PlaySquareOutlined />
+  //                 )
+  //               }
+  //             >
+  //               {!notificationStarted ? 'Iniciar' : 'Parar'}
+  //             </Menu.Item>
+  //             <Menu.SubMenu
+  //               title="Opções"
+  //               icon={<ControlOutlined />}
+  //               disabled={notificationStarted}
+  //             >
+  //               <Menu.Item
+  //                 icon={<FieldTimeOutlined />}
+  //                 onClick={restaurarPadrao}
+  //               >
+  //                 Restaurar padrão
+  //               </Menu.Item>
+  //               <Menu.Item
+  //                 icon={<RestOutlined />}
+  //                 onClick={limparTodos}
+  //               >
+  //                 Limpar todos
+  //               </Menu.Item>
+  //             </Menu.SubMenu>
   return (
     <>
       <Helmet>
-        <title>
-          {siteTitle} - {props.pageTitle}
-        </title>
+        <title>Title{/* {siteTitle} - {props.pageTitle} */}</title>
         <meta name="description" content={props.pageTitle} />
       </Helmet>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Notificações</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb
+        style={{ margin: '16px 0' }}
+        items={breadCrumbItems}
+      />
       <Content
         className="site-layout-background"
         style={{
@@ -478,39 +539,8 @@ function Events(props) {
               mode="horizontal"
               selectable={false}
               style={{ height: '100%', borderRight: 0 }}
-            >
-              <Menu.Item
-                key="1"
-                onClick={toggleNotificacoes}
-                icon={
-                  notificationStarted ? (
-                    <PauseOutlined />
-                  ) : (
-                    <PlaySquareOutlined />
-                  )
-                }
-              >
-                {!notificationStarted ? 'Iniciar' : 'Parar'}
-              </Menu.Item>
-              <Menu.SubMenu
-                title="Opções"
-                icon={<ControlOutlined />}
-                disabled={notificationStarted}
-              >
-                <Menu.Item
-                  icon={<FieldTimeOutlined />}
-                  onClick={restaurarPadrao}
-                >
-                  Restaurar padrão
-                </Menu.Item>
-                <Menu.Item
-                  icon={<RestOutlined />}
-                  onClick={limparTodos}
-                >
-                  Limpar todos
-                </Menu.Item>
-              </Menu.SubMenu>
-            </Menu>
+              items={actionMenuItems}
+            />
           </Affix>
         </div>
         {notificationStarted && (

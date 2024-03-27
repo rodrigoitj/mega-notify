@@ -1,48 +1,36 @@
 {
   "name": "mega-notify",
-  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@ant-design/icons": "^4.6.2",
-    "@craco/craco": "^6.1.2",
-    "@react-corekit/use-interval": "^1.1.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^13.1.8",
-    "antd": "^4.15.4",
-    "antd-mask-input": "^0.1.15",
-    "craco-less": "^1.17.0",
-    "gh-pages": "^3.1.0",
-    "humanize-duration": "^3.25.2",
-    "load-script": "^1.0.0",
-    "react": "^17.0.2",
-    "react-countdown": "^2.2.1",
-    "react-dom": "^17.0.2",
-    "react-helmet": "^6.1.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3"
-  },
-  "homepage": "https://rodrigoitj.github.io/mega-notify",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "craco start",
-    "build": "craco build --nomaps",
-    "test": "craco test",
-    "predeploy": "craco build --nomaps",
-    "deploy": "gh-pages -d build"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "antd": "^5.15.4",
+    "humanize-duration": "^3.31.0",
+    "load-script": "^2.0.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "react": "^18.2.0",
+    "react-countdown": "^2.3.5",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.22.3",
+    "simpler-state": "^1.2.1"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "less": "^4.2.0",
+    "vite": "^5.2.0"
   }
 }
