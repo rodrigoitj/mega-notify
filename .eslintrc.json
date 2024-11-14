@@ -1,0 +1,48 @@
+{
+  "root": true,
+  "env": { "browser": true, "es2020": true },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs", ".eslintrc.json"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
+    "react": { "version": "18.2" }
+  },
+  "plugins": ["react-refresh", "@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/jsx-uses-react": 1,
+    "react/react-in-jsx-scope": 1,
+    "react/jsx-no-target-blank": 1,
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+    "react-refresh/only-export-components": [
+      "warn",
+      { "allowConstantExport": true }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.jsx"],
+      "rules": {
+        // Add or override rules for JSX files here
+      }
+    }
+  ]
+}

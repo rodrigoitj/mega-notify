@@ -1,10 +1,13 @@
 import React from 'react';
-import Events from './pages/Events.jsx';
-import { Layout, Menu } from 'antd';
+import Events from './pages/events/Events';
+import { Layout, Menu, FloatButton } from 'antd';
 import {
   NotificationOutlined,
   SettingOutlined,
   SyncOutlined,
+  UpCircleTwoTone,
+  ExclamationOutlined,
+  SmileOutlined,
 } from '@ant-design/icons';
 import './App.less';
 import {
@@ -14,48 +17,11 @@ import {
   Link,
 } from 'react-router-dom';
 import { siteTitle } from './state/GlobalState.js';
-
+import Config from './pages/config/Config.tsx';
+import GiveAway from './pages/giveaway/GiveAway';
+const BackTop = FloatButton.BackTop;
 const { Header, Sider } = Layout;
-const topBarMenuitems = [
-  {
-    label: (
-      <Link
-        to="http://megamu.net/py0y"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        MEGAMU
-      </Link>
-    ),
-    key: 'home',
-  },
-];
 
-const menuItems = [
-  {
-    label: 'Notificações',
-    key: '1',
-    icon: <NotificationOutlined />,
-  },
-  {
-    label: 'Alerta Reset',
-    key: '2',
-    icon: <SyncOutlined />,
-  },
-  {
-    label: 'Configurações',
-    key: '3',
-    icon: <SettingOutlined />,
-    disabled: true,
-    title: 'Em Breve',
-    children: [
-      {
-        label: 'Configurações',
-        key: '3-1',
-      },
-    ],
-  },
-];
 function App() {
   return (
     <Layout>
@@ -68,38 +34,98 @@ function App() {
           <Menu
             mode="horizontal"
             theme="dark"
-            style={{ float: 'right' }}
-            items={topBarMenuitems}
+            style={{ float: 'right', minWidth: '100px' }}
+            items={[
+              {
+                label: (
+                  <Link
+                    to="http://megamu.net/py0y"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    MEGAMU
+                  </Link>
+                ),
+                key: 'home',
+              },
+            ]}
           />
         </Header>
         <Layout>
           <Sider width={200} className="site-layout-background">
             <Menu
               mode="inline"
-              defaultSelectedKeys={['1']}
-              // defaultOpenKeys={["sub1"]}
+              defaultSelectedKeys={[location.pathname]}
               style={{ height: '100%', borderRight: 0 }}
-              items={menuItems}
+              items={[
+                {
+                  label: <Link to="/">Eventos</Link>,
+                  key: '/',
+                  icon: <NotificationOutlined />,
+                },
+                {
+                  label: 'Resets',
+                  // label: <Link to="/resets">Resets</Link>,
+                  disabled: true,
+                  key: '/resets',
+                  icon: <SyncOutlined />,
+                },
+                {
+                  label: 'Boss',
+                  // label: <Link to="/boss">Boss</Link>,
+                  disabled: true,
+                  key: '/boss',
+                  icon: <SmileOutlined />,
+                },
+
+                {
+                  label: 'Sorteio',
+                  // label: <Link to="/sorteio">Sorteio</Link>,
+                  disabled: true,
+                  key: '/sorteio',
+                  icon: <ExclamationOutlined />,
+                },
+                {
+                  label: (
+                    <Link to="/configuracoes">Configurações</Link>
+                  ),
+                  key: '/configuracoes',
+                  icon: <SettingOutlined />,
+                },
+              ]}
             />
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
             <Routes>
               <Route
-                key="1"
+                key="/"
                 path="/"
-                element={<Events pageTitle="Alerta de eventos" />}
-                // element={<p>Home</p>}
+                element={<Events pageTitle="Eventos" />}
               />
-              <Route path="/resets" />
               <Route
-                key="2"
+                key="/resets"
                 path="/resets"
                 element={<p>Alerta de resets</p>}
+              ></Route>
+              <Route
+                key="/sorteio"
+                path="/sorteio"
+                element={<GiveAway pageTitle="Sorteios" />}
+              ></Route>
+              <Route
+                key="/configuracoes"
+                path="/configuracoes"
+                element={<Config pageTitle="Configurações" />}
               ></Route>
             </Routes>
           </Layout>
         </Layout>
       </Router>
+      <BackTop
+        icon={<UpCircleTwoTone />}
+        shape="square"
+        type="primary"
+      />
     </Layout>
   );
 }

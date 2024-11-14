@@ -9,9 +9,15 @@ const eventDetails = {
   'White Wizard': 'https://megamu.net/forum/showthread.php?tid=1327',
   'Dragão Dourado': 'https://megamu.net/forum/',
   Demons: 'https://megamu.net/forum/showthread.php?tid=1341',
-  'Illusion 50-149rr':
+  'Illusion [Rank 1]':
     'https://megamu.net/forum/showthread.php?tid=9391',
-  'Illusion 150-200rr':
+  'Illusion [Rank 2]':
+    'https://megamu.net/forum/showthread.php?tid=9391',
+  'Illusion [Rank 3]':
+    'https://megamu.net/forum/showthread.php?tid=9391',
+  'Illusion [Rank 4]':
+    'https://megamu.net/forum/showthread.php?tid=9391',
+  'Illusion [Rank 5]':
     'https://megamu.net/forum/showthread.php?tid=9391',
   'Dimens. Mirror':
     'https://megamu.net/forum/showthread.php?tid=6226',
@@ -32,18 +38,18 @@ const eventDetails = {
   'CTF Devias': 'https://megamu.net/forum/showthread.php?tid=1272',
   'CTF Elbeland': 'https://megamu.net/forum/showthread.php?tid=1272',
   'CTF Atlans': 'https://megamu.net/forum/showthread.php?tid=1272',
-  'CTF Sv4': 'https://megamu.net/forum/showthread.php?tid=1272',
+  'CTF Sv1': 'https://megamu.net/forum/showthread.php?tid=1272',
   'CTF Sv5': 'https://megamu.net/forum/showthread.php?tid=1272',
   'Quiz MEGAMU': 'https://megamu.net/forum',
   Sanguinário: 'https://megamu.net/forum/showthread.php?tid=1781',
   'Sanguinário FULL':
     'https://megamu.net/forum/showthread.php?tid=1781',
-  'Sanguinário Sv5':
+  'Sanguinário Sv11':
     'https://megamu.net/forum/showthread.php?tid=1781',
   'CP Devias': 'https://megamu.net/forum/showthread.php?tid=2660',
   'CP Elbeland': 'https://megamu.net/forum/showthread.php?tid=2660',
   'CP Atlans': 'https://megamu.net/forum/showthread.php?tid=2660',
-  'CP Sv4': 'https://megamu.net/forum/showthread.php?tid=2660',
+  'CP Sv1': 'https://megamu.net/forum/showthread.php?tid=2660',
   'CP Sv5': 'https://megamu.net/forum/showthread.php?tid=2660',
   Survives: 'https://megamu.net/forum/showthread.php?tid=6423',
   'Survive All': 'https://megamu.net/forum/showthread.php?tid=6423',
@@ -51,13 +57,23 @@ const eventDetails = {
     'https://megamu.net/forum/showthread.php?tid=5990',
   'Dark Evolution':
     'https://megamu.net/forum/showthread.php?tid=5990',
-  'Uruk Attack': 'https://megamu.net/forum/showthread.php?tid=5871',
+  'Nars/Uruk': 'https://megamu.net/forum/showthread.php?tid=5871',
   'Chaos Invasion':
     'https://megamu.net/forum/showthread.php?tid=6170',
   'Chickens Escape':
     'https://megamu.net/forum/showthread.php?tid=8073',
   'Lost Horse': 'https://megamu.net/forum/showthread.php?tid=8074',
   'Battle Royale': 'https://megamu.net/forum/showthread.php?tid=8369',
+  'Ice Temple [Rank 1]':
+    'https://megamu.net/forum/showthread.php?tid=11469',
+  'Ice Temple [Rank 2]':
+    'https://megamu.net/forum/showthread.php?tid=11469',
+  'Ice Temple [Rank 3]':
+    'https://megamu.net/forum/showthread.php?tid=11469',
+  'Ice Temple [Rank 4]':
+    'https://megamu.net/forum/showthread.php?tid=11469',
+  'Ice Temple [Rank 5]':
+    'https://megamu.net/forum/showthread.php?tid=11469',
 };
 
 export default eventDetails;
